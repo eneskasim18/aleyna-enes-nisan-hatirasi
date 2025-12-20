@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bizim Anılarımız</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+    <title>Aleyna & Enes | Anılarımız</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
     <style>
         body {
             background-color: #fcf9f5;
@@ -12,6 +12,7 @@
             font-family: 'Montserrat', sans-serif;
             display: flex; justify-content: center; align-items: center;
             min-height: 100vh; margin: 0;
+            padding: 20px; box-sizing: border-box;
         }
         .card {
             background: white;
@@ -19,47 +20,94 @@
             border-radius: 4px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.03);
             text-align: center;
-            max-width: 400px; width: 90%;
+            max-width: 400px; width: 100%;
             border: 1px solid #eee5da;
+            transition: all 0.3s ease;
         }
-        h1 { font-family: 'Playfair Display', serif; font-weight: 400; font-size: 2rem; margin-bottom: 5px; }
+        h1 { font-family: 'Playfair Display', serif; font-weight: 400; font-size: 2rem; margin-bottom: 5px; color: #8d775f; }
+        h2 { font-size: 1rem; font-weight: 300; letter-spacing: 2px; text-transform: uppercase; color: #b0a8a0; margin-top: 0; }
         .divider { width: 40px; height: 1px; background: #d4c3ad; margin: 20px auto; }
-        p { font-size: 0.9rem; line-height: 1.6; margin-bottom: 30px; color: #8a7e74; }
+        p { font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px; color: #8a7e74; }
         
-        /* FOTOĞRAF AYARLARI */
         .couple-photo {
-            width: 180px; /* Genişlik ideal boyutta */
-            height: auto; /* Yükseklik orantılı olarak ayarlanır (fotoğraf bozulmaz) */
-            border-radius: 8px; /* Köşeleri hafif yumuşak */
-            margin: 10px auto 25px auto;
+            width: 180px; height: auto;
+            border-radius: 8px;
+            margin: 10px auto 20px auto;
             display: block;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
         
-        .upload-area {
-            border: 1px dashed #d4c3ad;
-            padding: 30px;
-            cursor: pointer;
-            transition: 0.3s;
-            background: #fffdfb;
-        }
-        .upload-area:hover { background: #fdfaf5; border-color: #8d775f; }
-        
-        #fileInput { display: none; }
-        
+        /* BUTONLAR */
         .btn {
             background: #8d775f; color: white; border: none;
             padding: 12px 25px; margin-top: 20px; cursor: pointer;
             font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
-            width: 100%; transition: 0.3s;
+            width: 100%; transition: 0.3s; border-radius: 4px;
         }
         .btn:disabled { background: #ccc; }
-        #status { margin-top: 15px; font-size: 0.8rem; }
+        .btn-outline {
+            background: transparent; border: 1px solid #8d775f; color: #8d775f;
+            margin-bottom: 20px;
+        }
+        .btn-outline:hover { background: #fdfaf5; }
+
+        .upload-area {
+            border: 1px dashed #d4c3ad; padding: 30px;
+            cursor: pointer; transition: 0.3s; background: #fffdfb;
+            margin-top: 10px;
+        }
+        .upload-area:hover { background: #fdfaf5; border-color: #8d775f; }
+        #fileInput { display: none; }
+        #status { margin-top: 15px; font-size: 0.8rem; min-height: 20px;}
+
+        /* GALERİ STİLLERİ */
+        #gallerySection { display: none; }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .gallery-item {
+            width: 100%; height: 150px;
+            object-fit: cover; border-radius: 4px; border: 1px solid #eee;
+            cursor: pointer; transition: transform 0.2s;
+        }
+        .gallery-item:active { transform: scale(0.98); }
+        .loading-gallery { font-style: italic; color: #aaa; margin: 20px 0; }
+
+        /* POPUP (MODAL) STİLLERİ */
+        .modal {
+            display: none; /* Başlangıçta gizli */
+            position: fixed; z-index: 1000;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.9); /* Arka plan karartma */
+            justify-content: center; align-items: center;
+        }
+        .modal-content {
+            max-width: 90%; max-height: 90%;
+            border-radius: 4px;
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
+            animation: zoomIn 0.3s;
+        }
+        .close {
+            position: absolute; top: 20px; right: 30px;
+            color: #f1f1f1; font-size: 40px; font-weight: bold;
+            cursor: pointer; transition: 0.3s;
+        }
+        .close:hover { color: #bbb; }
+        
+        @keyframes zoomIn {
+            from {transform:scale(0.8); opacity:0} 
+            to {transform:scale(1); opacity:1}
+        }
     </style>
 </head>
 <body>
 
-<div class="card">
+<div class="card" id="uploadSection">
     <h1>ALEYNA & ENES</h1>
     <h2>Mutluluğumuzu Paylaşın</h2>
     <div class="divider"></div>
@@ -75,21 +123,112 @@
 
     <button id="uploadBtn" class="btn">YÜKLE</button>
     <div id="status"></div>
+	<button class="btn btn-outline" onclick="showGallery()">📸 Yüklenenleri Gör</button>
+</div>
+
+<div class="card" id="gallerySection">
+    <h1>ALBÜMÜMÜZ</h1>
+    <div class="divider"></div>
+    <button class="btn btn-outline" style="margin-bottom: 10px;" onclick="showUpload()">⬅ Geri Dön</button>
+    
+    <div id="galleryContainer" class="gallery-grid">
+        </div>
+    <div id="galleryStatus" class="loading-gallery">Fotoğraflar getiriliyor...</div>
+</div>
+
+<div id="imageModal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modalImg">
 </div>
 
 <script>
+    // NOT: URL'nin değişmediğinden emin ol. 
+    // Eğer Apps Script'te yeni bir dağıtım (New Version) yapmadıysan URL aynı kalır.
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTmff02Ttkmmn_r0Hz06nCf5z_aATgnWlniPkc4E_OqEvOTDu2ciG9p0xRldYs_ulHOQ/exec";
+    
+    const uploadSection = document.getElementById('uploadSection');
+    const gallerySection = document.getElementById('gallerySection');
+    const galleryContainer = document.getElementById('galleryContainer');
+    const galleryStatus = document.getElementById('galleryStatus');
+    
+    // Modal Elementleri
+    const modal = document.getElementById("imageModal");
+    const modalImg = document.getElementById("modalImg");
+
+    // Sayfa Geçişleri
+    function showGallery() {
+        uploadSection.style.display = 'none';
+        gallerySection.style.display = 'block';
+        loadPhotos();
+    }
+
+    function showUpload() {
+        gallerySection.style.display = 'none';
+        uploadSection.style.display = 'block';
+    }
+
+    // Modal (Popup) Fonksiyonları
+    function openModal(src) {
+        modal.style.display = "flex";
+        modalImg.src = src;
+    }
+
+    function closeModal() {
+        modal.style.display = "none";
+        modalImg.src = ""; // Kapatınca resmi temizle
+    }
+
+    // Modal dışına tıklayınca kapat
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+
+    // Fotoğrafları Getir
+    async function loadPhotos() {
+        galleryContainer.innerHTML = "";
+        galleryStatus.style.display = 'block';
+        galleryStatus.innerText = "Fotoğraflar yükleniyor...";
+
+        try {
+            const response = await fetch(SCRIPT_URL);
+            const photos = await response.json();
+            
+            galleryStatus.style.display = 'none';
+            
+            if (photos.length === 0) {
+                galleryStatus.innerText = "Henüz fotoğraf yüklenmemiş.";
+                galleryStatus.style.display = 'block';
+                return;
+            }
+
+            photos.forEach(photo => {
+                const img = document.createElement('img');
+                img.src = photo.url;
+                img.className = 'gallery-item';
+                img.loading = "lazy";
+                
+                // Tıklayınca Popup Aç
+                img.onclick = () => openModal(photo.url);
+                
+                galleryContainer.appendChild(img);
+            });
+
+        } catch (error) {
+            console.error(error);
+            galleryStatus.innerText = "Bağlantı hatası oluştu.";
+        }
+    }
+
+    // Yükleme İşlemleri
     const fileInput = document.getElementById('fileInput');
     const uploadBtn = document.getElementById('uploadBtn');
     const status = document.getElementById('status');
-    
-    // NOT: BURAYA DAHA ÖNCE OLUŞTURDUĞUN WEB APP URL'SİNİ TEKRAR YAPIŞTIRMAYI UNUTMA
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw9x9QhnbNVe6TBCqXHHG4w-R9njJ_43yTM0FLLUFkfVzEyQa__mz8NnvN4fT6MF8X-wA/exec"; // 2. Adımdaki URL
 
     fileInput.onchange = () => {
         const files = fileInput.files;
-        if (files.length > 0) {
-            document.getElementById('fileName').innerText = files.length + " dosya seçildi";
-        }
+        if (files.length > 0) document.getElementById('fileName').innerText = files.length + " dosya seçildi";
     };
 
     uploadBtn.onclick = async () => {
@@ -104,9 +243,8 @@
             await new Promise(resolve => {
                 reader.onload = async () => {
                     const base64 = reader.result.split(',')[1];
-                    // Hata yönetimi için try-catch eklendi
                     try {
-                        const response = await fetch(SCRIPT_URL, {
+                        await fetch(SCRIPT_URL, {
                             method: "POST",
                             body: JSON.stringify({
                                 base64: base64,
@@ -114,16 +252,12 @@
                                 mimeType: file.type
                             })
                         });
-                        // Opsiyonel: Sunucudan gelen yanıtı kontrol edebilirsin
-                        // const result = await response.json(); 
-                    } catch (error) {
-                        console.error("Yükleme hatası:", error);
-                    }
+                    } catch (error) { console.error(error); }
                     resolve();
                 };
             });
         }
-        status.innerText = "Hepsi başarıyla yüklendi. Teşekkür ederiz!";
+        status.innerText = "Hepsi başarıyla yüklendi!";
         uploadBtn.disabled = false;
         fileInput.value = '';
         document.getElementById('fileName').innerText = "Fotoğraf Seç";
