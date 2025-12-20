@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bizim Anılarımız</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #fcf9f5;
+            color: #5d544d;
+            font-family: 'Montserrat', sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; margin: 0;
+        }
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 4px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            text-align: center;
+            max-width: 400px; width: 90%;
+            border: 1px solid #eee5da;
+        }
+        h1 { font-family: 'Playfair Display', serif; font-weight: 400; font-size: 2rem; margin-bottom: 5px; }
+        .divider { width: 40px; height: 1px; background: #d4c3ad; margin: 20px auto; }
+        p { font-size: 0.9rem; line-height: 1.6; margin-bottom: 30px; color: #8a7e74; }
+        
+        /* FOTOĞRAF AYARLARI */
+        .couple-photo {
+            width: 180px; /* Genişlik ideal boyutta */
+            height: auto; /* Yükseklik orantılı olarak ayarlanır (fotoğraf bozulmaz) */
+            border-radius: 8px; /* Köşeleri hafif yumuşak */
+            margin: 10px auto 25px auto;
+            display: block;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .upload-area {
+            border: 1px dashed #d4c3ad;
+            padding: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+            background: #fffdfb;
+        }
+        .upload-area:hover { background: #fdfaf5; border-color: #8d775f; }
+        
+        #fileInput { display: none; }
+        
+        .btn {
+            background: #8d775f; color: white; border: none;
+            padding: 12px 25px; margin-top: 20px; cursor: pointer;
+            font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
+            width: 100%; transition: 0.3s;
+        }
+        .btn:disabled { background: #ccc; }
+        #status { margin-top: 15px; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>ALEYNA & ENES</h1>
+    <h2>Mutluluğumuzu Paylaşın</h2>
+    <div class="divider"></div>
+    
+    <img src="alenes.png" alt="Aleyna & Enes" class="couple-photo">
+    
+    <p>Nişanımızda çektiğiniz en güzel kareleri bizimle paylaşarak bu günü ölümsüzleştirmemize yardımcı olun.</p>
+    
+    <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+        <span id="fileName">Fotoğraf Seç</span>
+        <input type="file" id="fileInput" accept="image/*" multiple>
+    </div>
+
+    <button id="uploadBtn" class="btn">YÜKLE</button>
+    <div id="status"></div>
+</div>
+
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const status = document.getElementById('status');
+    
+    // NOT: BURAYA DAHA ÖNCE OLUŞTURDUĞUN WEB APP URL'SİNİ TEKRAR YAPIŞTIRMAYI UNUTMA
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw9x9QhnbNVe6TBCqXHHG4w-R9njJ_43yTM0FLLUFkfVzEyQa__mz8NnvN4fT6MF8X-wA/exec"; // 2. Adımdaki URL
+
+    fileInput.onchange = () => {
+        const files = fileInput.files;
+        if (files.length > 0) {
+            document.getElementById('fileName').innerText = files.length + " dosya seçildi";
+        }
+    };
+
+    uploadBtn.onclick = async () => {
+        if (fileInput.files.length === 0) return alert("Lütfen önce fotoğraf seçin");
+        
+        uploadBtn.disabled = true;
+        status.innerText = "Yükleniyor... Lütfen bekleyin.";
+
+        for (let file of fileInput.files) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            await new Promise(resolve => {
+                reader.onload = async () => {
+                    const base64 = reader.result.split(',')[1];
+                    // Hata yönetimi için try-catch eklendi
+                    try {
+                        const response = await fetch(SCRIPT_URL, {
+                            method: "POST",
+                            body: JSON.stringify({
+                                base64: base64,
+                                fileName: file.name,
+                                mimeType: file.type
+                            })
+                        });
+                        // Opsiyonel: Sunucudan gelen yanıtı kontrol edebilirsin
+                        // const result = await response.json(); 
+                    } catch (error) {
+                        console.error("Yükleme hatası:", error);
+                    }
+                    resolve();
+                };
+            });
+        }
+        status.innerText = "Hepsi başarıyla yüklendi. Teşekkür ederiz!";
+        uploadBtn.disabled = false;
+        fileInput.value = '';
+        document.getElementById('fileName').innerText = "Fotoğraf Seç";
+    };
+</script>
+
+</body>
+</html>
