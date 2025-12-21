@@ -25,13 +25,22 @@
             transition: all 0.3s ease;
         }
         h1 { font-family: 'Playfair Display', serif; font-weight: 400; font-size: 2rem; margin-bottom: 5px; color: #8d775f; }
-        h2 { font-size: 1rem; font-weight: 300; letter-spacing: 2px; text-transform: uppercase; color: #b0a8a0; margin-top: 0; }
-        .divider { width: 40px; height: 1px; background: #d4c3ad; margin: 20px auto; }
+        h2 { font-size: 1rem; font-weight: 300; letter-spacing: 2px; text-transform: uppercase; color: #b0a8a0; margin-top: 0; margin-bottom: 15px auto;}
+        .divider {
+			width: 40px;
+			height: 1px;
+			background: #d4c3ad;
+			/* Marginleri ayırıyoruz: */
+			margin-top: 5px;     /* Çizginin ÜSTÜNDEKİ boşluk (H2'den uzaklık) */
+			margin-bottom: 5px;  /* Çizginin ALTINDAKİ boşluk (Fotoğrafa uzaklık) */
+			margin-left: auto;   /* Ortalamak için */
+			margin-right: auto;  /* Ortalamak için */
+		}
         p { font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px; color: #8a7e74; }
         
         .couple-photo {
-            width: 180px; height: auto; 
-            margin: 10px auto 20px auto;
+            width: 200px; height: auto; 
+            margin: 15px auto 2px auto;
 			background-color: white;
         }
         
