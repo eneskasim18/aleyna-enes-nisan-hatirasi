@@ -25,33 +25,26 @@
             transition: all 0.3s ease;
         }
         h1 { font-family: 'Playfair Display', serif; font-weight: 400; font-size: 2rem; margin-bottom: 5px; color: #8d775f; }
-        h2 { font-size: 1rem; font-weight: 300; letter-spacing: 2px; text-transform: uppercase; color: #b0a8a0; margin-top: 0; margin-bottom: 15px auto;}
+        h2 { font-size: 1rem; font-weight: 300; letter-spacing: 2px; text-transform: uppercase; color: #b0a8a0; margin-top: 0; margin-bottom: 15px; }
         .divider {
-			width: 40px;
-			height: 1px;
-			background: #d4c3ad;
-			/* Marginleri ayırıyoruz: */
-			margin-top: 5px;     /* Çizginin ÜSTÜNDEKİ boşluk (H2'den uzaklık) */
-			margin-bottom: 5px;  /* Çizginin ALTINDAKİ boşluk (Fotoğrafa uzaklık) */
-			margin-left: auto;   /* Ortalamak için */
-			margin-right: auto;  /* Ortalamak için */
-		}
+            width: 40px; height: 1px; background: #d4c3ad;
+            margin: 5px auto;
+        }
         p { font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px; color: #8a7e74; }
         
         .couple-photo {
             width: 200px; height: auto; 
             margin: 15px auto 2px auto;
-			background-color: white;
+            background-color: white;
         }
         
-        /* BUTONLAR */
         .btn {
             background: #8d775f; color: white; border: none;
             padding: 12px 25px; margin-top: 20px; cursor: pointer;
             font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
             width: 100%; transition: 0.3s; border-radius: 4px;
         }
-        .btn:disabled { background: #ccc; }
+        .btn:disabled { background: #ccc; cursor: not-allowed; }
         .btn-outline {
             background: transparent; border: 1px solid #8d775f; color: #8d775f;
             margin-bottom: 20px;
@@ -65,51 +58,43 @@
         }
         .upload-area:hover { background: #fdfaf5; border-color: #8d775f; }
         #fileInput { display: none; }
-        #status { margin-top: 15px; font-size: 0.8rem; min-height: 20px;}
+        
+        /* İLERLEME ÇUBUĞU */
+        .progress-container {
+            width: 100%; background-color: #e0e0e0; border-radius: 10px;
+            margin-top: 15px; display: none; overflow: hidden;
+        }
+        .progress-bar {
+            width: 0%; height: 20px; background-color: #8d775f;
+            text-align: center; line-height: 20px; color: white;
+            font-size: 0.7rem; transition: width 0.3s ease-in-out;
+        }
+        #status { margin-top: 10px; font-size: 0.8rem; min-height: 20px; color: #8a7e74;}
 
-        /* GALERİ STİLLERİ */
+        /* GALERİ VE MODAL */
         #gallerySection { display: none; }
         .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 20px;
-            max-height: 400px;
-            overflow-y: auto;
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+            margin-top: 20px; max-height: 400px; overflow-y: auto;
         }
         .gallery-item {
-            width: 100%; height: 150px;
-            object-fit: cover; border-radius: 4px; border: 1px solid #eee;
-            cursor: pointer; transition: transform 0.2s;
+            width: 100%; height: 150px; object-fit: cover;
+            border-radius: 4px; border: 1px solid #eee; cursor: pointer;
         }
-        .gallery-item:active { transform: scale(0.98); }
-        .loading-gallery { font-style: italic; color: #aaa; margin: 20px 0; }
-
-        /* POPUP (MODAL) STİLLERİ */
         .modal {
-            display: none; /* Başlangıçta gizli */
-            position: fixed; z-index: 1000;
-            left: 0; top: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.9); /* Arka plan karartma */
+            display: none; position: fixed; z-index: 1000; left: 0; top: 0;
+            width: 100%; height: 100%; background-color: rgba(0,0,0,0.9);
             justify-content: center; align-items: center;
         }
         .modal-content {
-            max-width: 90%; max-height: 90%;
-            border-radius: 4px;
-            box-shadow: 0 0 20px rgba(255,255,255,0.1);
+            max-width: 90%; max-height: 90%; border-radius: 4px;
             animation: zoomIn 0.3s;
         }
         .close {
-            position: absolute; top: 20px; right: 30px;
-            color: #f1f1f1; font-size: 40px; font-weight: bold;
-            cursor: pointer; transition: 0.3s;
+            position: absolute; top: 20px; right: 30px; color: #f1f1f1;
+            font-size: 40px; font-weight: bold; cursor: pointer;
         }
-        .close:hover { color: #bbb; }
-        
-        @keyframes zoomIn {
-            from {transform:scale(0.8); opacity:0} 
-            to {transform:scale(1); opacity:1}
-        }
+        @keyframes zoomIn { from {transform:scale(0.8); opacity:0} to {transform:scale(1); opacity:1} }
     </style>
 </head>
 <body>
@@ -128,18 +113,20 @@
         <input type="file" id="fileInput" accept="image/*" multiple>
     </div>
 
+    <div class="progress-container" id="progressContainer">
+        <div class="progress-bar" id="progressBar">0%</div>
+    </div>
+
     <button id="uploadBtn" class="btn">YÜKLE</button>
     <div id="status"></div>
-	<button class="btn btn-outline" onclick="showGallery()">📸 Yüklenenleri Gör</button>
+    <button class="btn btn-outline" onclick="showGallery()">📸 Yüklenenleri Gör</button>
 </div>
 
 <div class="card" id="gallerySection">
     <h1>ALBÜMÜMÜZ</h1>
     <div class="divider"></div>
     <button class="btn btn-outline" style="margin-bottom: 10px;" onclick="showUpload()">⬅ Geri Dön</button>
-    
-    <div id="galleryContainer" class="gallery-grid">
-        </div>
+    <div id="galleryContainer" class="gallery-grid"></div>
     <div id="galleryStatus" class="loading-gallery">Fotoğraflar getiriliyor...</div>
 </div>
 
@@ -149,89 +136,45 @@
 </div>
 
 <script>
-    // NOT: URL'nin değişmediğinden emin ol. 
-    // Eğer Apps Script'te yeni bir dağıtım (New Version) yapmadıysan URL aynı kalır.
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTmff02Ttkmmn_r0Hz06nCf5z_aATgnWlniPkc4E_OqEvOTDu2ciG9p0xRldYs_ulHOQ/exec";
     
     const uploadSection = document.getElementById('uploadSection');
     const gallerySection = document.getElementById('gallerySection');
     const galleryContainer = document.getElementById('galleryContainer');
     const galleryStatus = document.getElementById('galleryStatus');
-    
-    // Modal Elementleri
     const modal = document.getElementById("imageModal");
     const modalImg = document.getElementById("modalImg");
+    const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+    const fileInput = document.getElementById('fileInput');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const status = document.getElementById('status');
 
-    // Sayfa Geçişleri
-    function showGallery() {
-        uploadSection.style.display = 'none';
-        gallerySection.style.display = 'block';
-        loadPhotos();
-    }
+    function showGallery() { uploadSection.style.display = 'none'; gallerySection.style.display = 'block'; loadPhotos(); }
+    function showUpload() { gallerySection.style.display = 'none'; uploadSection.style.display = 'block'; }
+    function openModal(src) { modal.style.display = "flex"; modalImg.src = src; }
+    function closeModal() { modal.style.display = "none"; modalImg.src = ""; }
+    window.onclick = function(event) { if (event.target == modal) closeModal(); }
 
-    function showUpload() {
-        gallerySection.style.display = 'none';
-        uploadSection.style.display = 'block';
-    }
-
-    // Modal (Popup) Fonksiyonları
-    function openModal(src) {
-        modal.style.display = "flex";
-        modalImg.src = src;
-    }
-
-    function closeModal() {
-        modal.style.display = "none";
-        modalImg.src = ""; // Kapatınca resmi temizle
-    }
-
-    // Modal dışına tıklayınca kapat
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            closeModal();
-        }
-    }
-
-    // Fotoğrafları Getir
     async function loadPhotos() {
         galleryContainer.innerHTML = "";
         galleryStatus.style.display = 'block';
         galleryStatus.innerText = "Fotoğraflar yükleniyor...";
-
         try {
             const response = await fetch(SCRIPT_URL);
             const photos = await response.json();
-            
             galleryStatus.style.display = 'none';
-            
             if (photos.length === 0) {
                 galleryStatus.innerText = "Henüz fotoğraf yüklenmemiş.";
-                galleryStatus.style.display = 'block';
-                return;
+                galleryStatus.style.display = 'block'; return;
             }
-
             photos.forEach(photo => {
                 const img = document.createElement('img');
-                img.src = photo.url;
-                img.className = 'gallery-item';
-                img.loading = "lazy";
-                
-                // Tıklayınca Popup Aç
-                img.onclick = () => openModal(photo.url);
-                
-                galleryContainer.appendChild(img);
+                img.src = photo.url; img.className = 'gallery-item'; img.loading = "lazy";
+                img.onclick = () => openModal(photo.url); galleryContainer.appendChild(img);
             });
-
-        } catch (error) {
-            console.error(error);
-            galleryStatus.innerText = "Bağlantı hatası oluştu.";
-        }
+        } catch (error) { galleryStatus.innerText = "Bağlantı hatası oluştu."; }
     }
-
-    // Yükleme İşlemleri
-    const fileInput = document.getElementById('fileInput');
-    const uploadBtn = document.getElementById('uploadBtn');
-    const status = document.getElementById('status');
 
     fileInput.onchange = () => {
         const files = fileInput.files;
@@ -241,34 +184,87 @@
     uploadBtn.onclick = async () => {
         if (fileInput.files.length === 0) return alert("Lütfen önce fotoğraf seçin");
         
+        const totalFiles = fileInput.files.length;
         uploadBtn.disabled = true;
-        status.innerText = "Yükleniyor... Lütfen bekleyin.";
+        progressContainer.style.display = "block";
+        progressBar.style.width = "0%";
+        progressBar.innerText = "0%";
+        
+        for (let i = 0; i < totalFiles; i++) {
+            const file = fileInput.files[i];
+            
+            const simulation = simulateProgressBar(i, totalFiles);
+            
+            try {
+                // YAZIYI GÜNCELLE: "1/3 Yükleniyor..."
+                status.innerText = `${i + 1}. dosya yükleniyor... (${i}/${totalFiles} tamamlandı)`;
+                
+                await uploadSingleFile(file);
+                
+                // Yükleme bitti, simülasyonu durdur
+                clearInterval(simulation.interval);
+                // Çubuğu o anki dosya için %100 yap
+                updateBar((i + 1) * 100, totalFiles);
+                
+            } catch (error) {
+                console.error("Yükleme hatası:", error);
+                status.innerText = "İnternet bağlantısında sorun olabilir, devam ediliyor...";
+            }
+        }
+        
+        status.innerText = "Tüm dosyalar başarıyla yüklendi! Teşekkür ederiz.";
+        progressBar.style.width = "100%";
+        progressBar.innerText = "%100";
+        
+        setTimeout(() => {
+            uploadBtn.disabled = false;
+            fileInput.value = '';
+            document.getElementById('fileName').innerText = "Fotoğraf Seç";
+            progressContainer.style.display = "none";
+            progressBar.style.width = "0%";
+            status.innerText = "";
+        }, 4000);
+    };
 
-        for (let file of fileInput.files) {
+    function uploadSingleFile(file) {
+        return new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
-            await new Promise(resolve => {
-                reader.onload = async () => {
-                    const base64 = reader.result.split(',')[1];
-                    try {
-                        await fetch(SCRIPT_URL, {
-                            method: "POST",
-                            body: JSON.stringify({
-                                base64: base64,
-                                fileName: file.name,
-                                mimeType: file.type
-                            })
-                        });
-                    } catch (error) { console.error(error); }
+            reader.onload = async () => {
+                const base64 = reader.result.split(',')[1];
+                try {
+                    await fetch(SCRIPT_URL, {
+                        method: "POST",
+                        body: JSON.stringify({ base64: base64, fileName: file.name, mimeType: file.type })
+                    });
                     resolve();
-                };
-            });
-        }
-        status.innerText = "Hepsi başarıyla yüklendi!";
-        uploadBtn.disabled = false;
-        fileInput.value = '';
-        document.getElementById('fileName').innerText = "Fotoğraf Seç";
-    };
+                } catch (error) { reject(error); }
+            };
+        });
+    }
+
+    function simulateProgressBar(fileIndex, totalFiles) {
+        let currentFilePercent = 0;
+        
+        const interval = setInterval(() => {
+            if (currentFilePercent < 85) {
+                currentFilePercent += Math.random() * 2; 
+                
+                const globalPercent = ((fileIndex * 100) + currentFilePercent) / totalFiles;
+                
+                progressBar.style.width = Math.min(Math.round(globalPercent), 99) + "%";
+                progressBar.innerText = "%" + Math.min(Math.round(globalPercent), 99);
+            }
+        }, 150);
+
+        return { interval: interval };
+    }
+    
+    function updateBar(completedPercentSum, totalFiles) {
+        const globalPercent = completedPercentSum / totalFiles;
+        progressBar.style.width = Math.round(globalPercent) + "%";
+        progressBar.innerText = "%" + Math.round(globalPercent);
+    }
 </script>
 
 </body>
